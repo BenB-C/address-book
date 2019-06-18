@@ -12,15 +12,22 @@
     <h1>Address Book</h1>
     <h2>Add a Contact:</h2>
     <form id="new-contact">
-      <label for="new-first-name">First Name</label>
-      <input type="text" id="new-first-name">
-      <label for="new-last-name">Last Name</label>
-      <input type="text" id="new-last-name">
-      <label for="new-phone-number">Phone Number</label>
-      <input type="text" id="new-phone-number">
-      <label for="new-email">Email</label>
-      <input type="text" id="new-email">
-      <button type="submit">Add</button>
+      <!-- Contact Info -->
+      <div class="form-group row">
+        <input type="text" class="form-control col-sm-3" id="new-first-name" placeholder="Type your name here ">
+        <input type="text" class="form-control col-sm-3" id="new-last-name" placeholder="Last Name">
+        <input type="text" class="form-control col-sm-3" id="new-phone-number" placeholder="Phone Number">
+        <input type="text" class="form-control col-sm-3" id="new-email" placeholder="Email">
+      </div>
+      <!-- Contact Addresses -->
+      <div class="form-group row">
+        <input type="text" class="form-control col-sm-4" id="new-street" placeholder="Address">
+        <input type="text" class="form-control col-sm-4" id="new-type" placeholder="Type (Home/Work/Etc)">
+        <button id="add-address" type="button">Add Address</button>
+      </div>
+      <div id="moreAddresses" class="form-group"></div>
+      <!-- Form Submit Button -->
+      <button type="submit">Add Contact</button>
     </form>
 
     <h2>Contacts:</h2>
@@ -32,6 +39,11 @@
       <p>Last Name: <span class="last-name"></span></p>
       <p>Phone Number: <span class="phone-number"></span></p>
       <p>Email: <span class="email"></span></p>
+      <p>Address: <span class="street"></span></p>
+      <p>Type: <span class="type"></span></p>
+      <div class="moreAddressResults">
+
+      </div>
       <div id="buttons">
       </div>
     </div>

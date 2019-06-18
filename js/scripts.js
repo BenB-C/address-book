@@ -42,16 +42,31 @@ function Contact(firstName, lastName, phoneNumber, email) {
   this.firstName = firstName,
   this.lastName = lastName,
   this.phoneNumber = phoneNumber,
-  this.email = email
+  this.email = email,
+  this.addresses = []
 }
 
 Contact.prototype.fullName = function() {
   return this.firstName + " " + this.lastName;
 }
 
+Contact.prototype.addAddress = function(address) {
+  this.addresses.push(address);
+}
+
+// Business Logic for Addresses ------------------------------------------------
+function Address(street, /*city, state, zipcode,*/ type) {
+  this.street = street,
+  // this.city = city,
+  // this.state = state,
+  // this.zipcode = zipcode,
+  this.type = type
+}
+
 
 // User Interface Logic --------------------------------------------------------
 var addressBook = new AddressBook();
+var numberOfAddressFields = 1;
 
 // -- Utility Functions --
 function attachContactListeners() {
@@ -81,30 +96,62 @@ function showContact(contactId) {
   $(".last-name").html(contact.lastName);
   $(".phone-number").html(contact.phoneNumber);
   $(".email").html(contact.email);
+  $(".street").html(contact.addresses[0].street);
+  $(".type").html(contact.addresses[0].type);
   var buttons = $("#buttons");
   buttons.empty();
   buttons.append("<button class='deleteButton' id=" +  + contact.id + ">Delete</button>");
+  $(".moreAddressResults").empty();
+  for (var i = 1; i< contact.addresses.length; i++){
+    $(".moreAddressResults").append(`<p>Address ${i+1}: ${contact.addresses[i].street}</p><p>Type: ${contact.addresses[i].type}</p>`);
+  }
 }
 
 // -- Document Ready Function --
 $(document).ready(function() {
   attachContactListeners();
+
   $("form#new-contact").submit(function(event) {
     event.preventDefault();
     var inputtedFirstName = $("input#new-first-name").val();
     var inputtedLastName = $("input#new-last-name").val();
     var inputtedPhoneNumber = $("input#new-phone-number").val();
     var inputtedEmail = $("input#new-email").val();
-    console.log(inputtedEmail);
+    var inputtedStreet = $("input#new-street").val();
+    var inputtedType = $("input#new-type").val();
+    var moreAddresses = []
+    for(var num = 2; num <= numberOfAddressFields; num++) {
+      var inStreet = $("input#new-street" + num).val();
+      var inType = $("input#new-type" + num).val();
+      moreAddresses.push(new Address (inStreet, inType))
+    }
 
     $("input#new-first-name").val("");
     $("input#new-last-name").val("");
     $("input#new-phone-number").val("");
     $("input#new-email").val("");
+    $("input#new-street").val("");
+    $("input#new-type").val("");
+    $("#moreAddresses").empty();
 
     var newContact = new Contact(inputtedFirstName, inputtedLastName, inputtedPhoneNumber, inputtedEmail);
+    var newAddress = new Address(inputtedStreet, inputtedType)
+    newContact.addAddress(newAddress);
+    moreAddresses.forEach(function(extraAddress){
+      newContact.addAddress(extraAddress)
+    })
     addressBook.addContact(newContact);
     displayContactDetails(addressBook);
     console.log(addressBook.contacts);
   })
+
+  $("button#add-address").click(function(){
+    numberOfAddressFields++;
+    $("#moreAddresses").append(`
+      <div class="row">
+        <input type="text" class="form-control col-sm-4" id="new-street${numberOfAddressFields}" placeholder="Street">
+        <input type="text" class="form-control col-sm-4" id="new-type${numberOfAddressFields}" placeholder="Type">
+      </div>
+    `);
+  });
 })
