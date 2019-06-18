@@ -1,4 +1,4 @@
-// Business Logic for AddressBook ---------
+// Business Logic for AddressBook ----------------------------------------------
 function AddressBook() {
   this.contacts = [],
   this.currentId = 0
@@ -37,8 +37,7 @@ AddressBook.prototype.deleteContact = function(id) {
   return false;
 }
 
-
-// Business Logic for Contacts ---------
+// Business Logic for Contacts -------------------------------------------------
 function Contact(firstName, lastName, phoneNumber, email) {
   this.firstName = firstName,
   this.lastName = lastName,
@@ -50,9 +49,11 @@ Contact.prototype.fullName = function() {
   return this.firstName + " " + this.lastName;
 }
 
-// User Interface Logic ---------
+
+// User Interface Logic --------------------------------------------------------
 var addressBook = new AddressBook();
 
+// -- Utility Functions --
 function attachContactListeners() {
   $("ul#contacts").on("click", "li", function() {
     showContact(this.id);
@@ -85,6 +86,7 @@ function showContact(contactId) {
   buttons.append("<button class='deleteButton' id=" +  + contact.id + ">Delete</button>");
 }
 
+// -- Document Ready Function --
 $(document).ready(function() {
   attachContactListeners();
   $("form#new-contact").submit(function(event) {
